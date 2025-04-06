@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>500</width>
+    <height>554</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Shortcut Configurator</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <property name="styleSheet">
+    <string notr="true">
+     QWidget {
+      background-color: #2E2E2E;
+      font-family: &quot;맑은 고딕&quot;, sans-serif;
+     }
+     QLabel {
+      font-size: 12px;
+      font-weight: bold; 
+      color: #ffffff;
+      text-align: center;
+      padding: 4px 0;
+     }
+     QTextEdit {
+      color: #D8CEF6; 
+      font-size: 12px;
+      border: 0;
+      border-top: 1px solid #D8CEF6;
+      border-bottom: 1px solid #D8CEF6;
+      padding: 8px 0;
+      margin: 12px 0;
+     }
+     QLineEdit {
+      color: #ffffff;
+      font-size: 12px;
+      border: 0;
+      background-color: #424242;
+      border-radius: 4px;
+      padding: 4px 8px;
+     }
+     QCheckBox {
+      padding-left: 4px;
+      font-size: 12px;
+      color: #ffffff;
+      margin-top: 8px;
+     }
+     QPushButton {
+      background-color: #9F81F7;
+      padding: 8px 16px;
+      border: 0;
+      border-radius: 4px;
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: bold;
+      margin-top: 8px;
+     }
+     QPushButton:hover {
+      background-color: #BCA9F5;
+      cursor: pointer;
+     }
+    </string>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <property name="spacing">
+     <number>4</number>
+    </property>
+    <property name="leftMargin">
+     <number>16</number>
+    </property>
+    <property name="topMargin">
+     <number>16</number>
+    </property>
+    <property name="rightMargin">
+     <number>16</number>
+    </property>
+    <property name="bottomMargin">
+     <number>16</number>
+    </property>
+    <item>
+     <widget class="QLabel" name="labelHeader">
+      <property name="styleSheet">
+       <string notr="true">font-size: 14pt;</string>
+      </property>
+      <property name="text">
+       <string>GOM Shortcut key</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QTextEdit" name="textEdit">
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="labelF5">
+        <property name="text">
+         <string>Ctrl + F5:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="lineEditF5"/>
+      </item>
+      <item row="0" column="2">
+       <widget class="QLineEdit" name="aliasF5"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="labelF6">
+        <property name="text">
+         <string>Ctrl + F6:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLineEdit" name="lineEditF6"/>
+      </item>
+      <item row="1" column="2">
+       <widget class="QLineEdit" name="aliasF6"/>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="labelF7">
+        <property name="text">
+         <string>Ctrl + F7:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLineEdit" name="lineEditF7"/>
+      </item>
+      <item row="2" column="2">
+       <widget class="QLineEdit" name="aliasF7"/>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="labelF8">
+        <property name="text">
+         <string>Ctrl + F8:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QLineEdit" name="lineEditF8"/>
+      </item>
+      <item row="3" column="2">
+       <widget class="QLineEdit" name="aliasF8"/>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="labelF9">
+        <property name="text">
+         <string>Ctrl + F9:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QLineEdit" name="lineEditF9"/>
+      </item>
+      <item row="4" column="2">
+       <widget class="QLineEdit" name="aliasF9"/>
+      </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="labelF10">
+        <property name="text">
+         <string>Ctrl + F10:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="QLineEdit" name="lineEditF10"/>
+      </item>
+      <item row="5" column="2">
+       <widget class="QLineEdit" name="aliasF10"/>
+      </item>
+      <item row="6" column="0">
+       <widget class="QLabel" name="labelF11">
+        <property name="text">
+         <string>Ctrl + F11:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="1">
+       <widget class="QLineEdit" name="lineEditF11"/>
+      </item>
+      <item row="6" column="2">
+       <widget class="QLineEdit" name="aliasF11"/>
+      </item>
+      <item row="7" column="0">
+       <widget class="QLabel" name="labelF12">
+        <property name="text">
+         <string>Ctrl + F12:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="1">
+       <widget class="QLineEdit" name="lineEditF12"/>
+      </item>
+      <item row="7" column="2">
+       <widget class="QLineEdit" name="aliasF12"/>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="QCheckBox" name="checkBoxNotify">
+      <property name="text">
+       <string>단축키 입력 시 알림 표시</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="buttonLayout">
+      <item>
+       <widget class="QPushButton" name="saveButton">
+        <property name="text">
+         <string>설정 저장</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

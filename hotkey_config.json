@@ -1,0 +1,37 @@
+{
+    "hotkeys": {
+        "1": {
+            "text": "Pressed Ctrl + F5",
+            "alias": "Alias F5"
+        },
+        "2": {
+            "text": "Pressed Ctrl + F6",
+            "alias": "Alias F6"
+        },
+        "3": {
+            "text": "Pressed Ctrl + F7",
+            "alias": "Alias F7"
+        },
+        "4": {
+            "text": "Pressed Ctrl + F8",
+            "alias": "Alias F8"
+        },
+        "5": {
+            "text": "Pressed Ctrl + F9",
+            "alias": "Alias F9"
+        },
+        "6": {
+            "text": "Pressed Ctrl + F10",
+            "alias": "Alias F10"
+        },
+        "7": {
+            "text": "Pressed Ctrl + F11",
+            "alias": "Alias F11"
+        },
+        "8": {
+            "text": "Pressed Ctrl + F12",
+            "alias": "Alias F12"
+        }
+    },
+    "notify": false
+}
