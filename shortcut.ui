@@ -85,7 +85,7 @@
     <item>
      <widget class="QLabel" name="labelHeader">
       <property name="styleSheet">
-       <string notr="true">font-size: 14pt;</string>
+       <string notr="true">font-size: 16px;</string>
       </property>
       <property name="text">
        <string>GOM Shortcut key</string>
@@ -223,6 +223,13 @@
     <item>
      <layout class="QHBoxLayout" name="buttonLayout">
       <item>
+       <widget class="QPushButton" name="fileButton">
+        <property name="text">
+         <string>GOM 파일</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="saveButton">
         <property name="text">
          <string>설정 저장</string>
@@ -230,6 +237,16 @@
        </widget>
       </item>
      </layout>
+    </item>
+    <item>
+     <widget class="QLabel" name="version">
+      <property name="styleSheet">
+       <string notr="true">font-size: 12px;</string>
+      </property>
+      <property name="text">
+       <string>ver 1.1</string>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>

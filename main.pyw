@@ -5,9 +5,11 @@ import subprocess
 import time
 import json
 import os
+import shutil
 from ctypes import wintypes
 from PyQt5 import QtWidgets, uic, QtGui
 from PyQt5.QtCore import pyqtSignal, QObject
+from PyQt5.QtWidgets import QFileDialog
 
 CONFIG_FILE = "hotkey_config.json"
 
@@ -90,6 +92,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.textEdit.append("단축키를 누르면 문자열이 클립보드에 복사됩니다.")
         emitter.triggered.connect(self.display_message)
         self.saveButton.clicked.connect(self.save_settings)
+        self.fileButton.clicked.connect(self.list_files_in_directory)
 
         self.input_fields = {}
         for i in range(8):
@@ -157,6 +160,35 @@ class MainWindow(QtWidgets.QMainWindow):
             HOTKEYS[idx]["alias"] = fields["alias"].text()
         save_config()
         self.textEdit.append("설정이 저장되었습니다.")
+
+    def list_files_in_directory(self):
+        folder_path = "D:\Source\Python\gom-shortcut-key" # QFileDialog.getExistingDirectory(self, "폴더 선택")
+        if folder_path:
+            try:
+                # .zip 파일 목록 가져오기
+                zip_files = [f for f in os.listdir(folder_path) if f.lower().endswith(".zip")]
+                if not zip_files:
+                    QMessageBox.information(self, "알림", "📦 .zip 파일이 없습니다.")
+                    return
+                # 가장 최근 파일 선택
+                zip_files_with_mtime = [
+                    (f, os.path.getmtime(os.path.join(folder_path, f))) for f in zip_files
+                ]
+                latest_file = max(zip_files_with_mtime, key=lambda x: x[1])[0]
+                src_path = os.path.join(folder_path, latest_file)
+
+                # 다운로드 폴더 경로
+                downloads_path = os.path.join(os.path.expanduser("~"), "Downloads")
+                dst_path = os.path.join(downloads_path, latest_file)
+
+                # 복사
+                shutil.copy2(src_path, dst_path)
+
+                # 로그 출력
+                self.textEdit.append(f"✅ 최신 zip 파일 '{latest_file}'을(를) 다운로드 폴더로 복사했습니다.")
+                # self.textEdit.append(f"📁 '{folder_path}'의 파일 목록:\n{file_list}\n")
+            except Exception as e:
+                self.textEdit.append(f"❌ 에러 발생: {e}")
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
