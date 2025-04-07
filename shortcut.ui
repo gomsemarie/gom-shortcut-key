@@ -62,7 +62,6 @@
      }
      QPushButton:hover {
       background-color: #BCA9F5;
-      cursor: pointer;
      }
     </string>
    </property>
