@@ -119,7 +119,7 @@ class MainWindow(QtWidgets.QMainWindow):
         hide_action.triggered.connect(self.hide)
         quit_action.triggered.connect(QtWidgets.qApp.quit)
 
-        self.tray_icon.setContextMenu(self.tray_menu)
+        # self.tray_icon.setContextMenu(self.tray_menu) # ver 1.3 - tray 뒤로감 문제 해결 테스트
         self.tray_icon.activated.connect(self.on_tray_activated)
         self.tray_icon.show()
 
@@ -130,9 +130,13 @@ class MainWindow(QtWidgets.QMainWindow):
         global notify_enabled
         notify_enabled = state
 
+    # ver 1.3 - tray 뒤로감 문제 해결 테스트
     def on_tray_activated(self, reason):
-        if reason == QtWidgets.QSystemTrayIcon.DoubleClick:
-            self.show()
+        # if reason == QtWidgets.QSystemTrayIcon.DoubleClick:
+        #     self.show()
+        if reason == QtWidgets.QSystemTrayIcon.Context:  # 우클릭일 때
+            self.display_message("끼얏호")
+            self.tray_menu.popup(QtGui.QCursor.pos())  # 현재 마우스 위치에 메뉴 표시
 
     def closeEvent(self, event):
         event.ignore()
