@@ -13,6 +13,7 @@ from PyQt5.QtCore import pyqtSignal, QObject
 from PyQt5.QtWidgets import QFileDialog
 from PyQt5.QtCore import QTimer # ver 1.2
 from PyQt5.QtNetwork import QLocalSocket, QLocalServer # ver 1.3
+from PyQt5.QtCore import QEvent
 
 CONFIG_FILE = "hotkey_config.json"
 
@@ -154,6 +155,19 @@ class MainWindow(QtWidgets.QMainWindow):
         self.load_settings()
         self.start_version_check_timer() # ver 1.2
 
+    # ver 1.4
+    def changeEvent(self, event):
+        if event.type() == QEvent.WindowStateChange:
+            if self.isMinimized():
+                QTimer.singleShot(0, self.hide)
+                self.tray_icon.showMessage(
+                    "GOM Shortcut",
+                    "🔽 프로그램이 트레이로 최소화되었습니다.",
+                    QtWidgets.QSystemTrayIcon.Information,
+                    3000
+                )
+        super().changeEvent(event)
+
     # ver 1.3
     def select_installed_directory(self):
         global installed_directory
@@ -166,22 +180,23 @@ class MainWindow(QtWidgets.QMainWindow):
 
     # ver 1.3 - tray 뒤로감 문제 해결 테스트
     def on_tray_activated(self, reason):
-        # if reason == QtWidgets.QSystemTrayIcon.DoubleClick:
-        #     self.show()
+        if reason == QtWidgets.QSystemTrayIcon.DoubleClick:
+            self.showNormal()
+            self.activateWindow()
         if reason == QtWidgets.QSystemTrayIcon.Context:  # 우클릭일 때
             self.display_message("끼얏호")
             self.tray_menu.popup(QtGui.QCursor.pos())  # 현재 마우스 위치에 메뉴 표시
 
-    def closeEvent(self, event):
-        event.ignore()
-        self.hide()
-        if notify_enabled:
-            self.tray_icon.showMessage(
-                "단축키 앱",
-                "백그라운드에서 계속 실행 중입니다.",
-                QtWidgets.QSystemTrayIcon.Information,
-                3000
-            )
+    # def closeEvent(self, event):
+    #     event.ignore()
+    #     self.hide()
+    #     if notify_enabled:
+    #         self.tray_icon.showMessage(
+    #             "단축키 앱",
+    #             "백그라운드에서 계속 실행 중입니다.",
+    #             QtWidgets.QSystemTrayIcon.Information,
+    #             3000
+    #         )
 
     def display_message(self, msg):
         self.textEdit.append(msg)
