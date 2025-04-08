@@ -220,18 +220,29 @@
      </widget>
     </item>
     <item>
+     <layout class="QHBoxLayout" name="installedLayout">
+      <item>
+       <widget class="QPushButton" name="selectPathButton">
+        <property name="text">
+         <string>📁 폴더 선택</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
      <layout class="QHBoxLayout" name="buttonLayout">
       <item>
-       <widget class="QPushButton" name="fileButton">
+       <widget class="QPushButton" name="updateButton">
         <property name="text">
-         <string>GOM 파일</string>
+         <string>GOM UPDATE</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="saveButton">
         <property name="text">
-         <string>설정 저장</string>
+         <string>SAVE</string>
         </property>
        </widget>
       </item>

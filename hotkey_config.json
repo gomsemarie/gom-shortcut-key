@@ -33,5 +33,6 @@
             "alias": "Alias F12"
         }
     },
-    "notify": false
+    "notify": false,
+    "installed": "D:/Source/Python/test-installed"
 }

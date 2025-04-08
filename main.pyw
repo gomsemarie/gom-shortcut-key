@@ -12,6 +12,7 @@ from PyQt5 import QtWidgets, uic, QtGui
 from PyQt5.QtCore import pyqtSignal, QObject
 from PyQt5.QtWidgets import QFileDialog
 from PyQt5.QtCore import QTimer # ver 1.2
+from PyQt5.QtNetwork import QLocalSocket, QLocalServer # ver 1.3
 
 CONFIG_FILE = "hotkey_config.json"
 
@@ -28,15 +29,39 @@ DEFAULT_HOTKEYS = {
 HOTKEYS = DEFAULT_HOTKEYS.copy()
 WM_HOTKEY = 0x0312
 
+class SingleInstanceChecker:
+    def __init__(self, key="gom_shortcut_app_instance"):
+        self.key = key
+        self.server = None
+
+    def is_running(self):
+        socket = QLocalSocket()
+        socket.connectToServer(self.key)
+        if socket.waitForConnected(100):
+            # 이미 실행 중인 인스턴스가 있음
+            socket.close()
+            return True
+        else:
+            # 현재 인스턴스가 서버 역할을 함
+            self.server = QLocalServer()
+            try:
+                self.server.removeServer(self.key)  # 혹시 남아 있던 이전 서버 제거
+            except:
+                pass
+            self.server.listen(self.key)
+            return False
+
 class HotkeyEmitter(QObject):
     triggered = pyqtSignal(str)
 
 emitter = HotkeyEmitter()
 
 notify_enabled = True
+installed_directory = os.path.join(os.path.expanduser("~"), "Downloads")
 
 def load_config():
     global notify_enabled
+    global installed_directory
     if os.path.exists(CONFIG_FILE):
         with open(CONFIG_FILE, 'r', encoding='utf-8') as f:
             data = json.load(f)
@@ -45,6 +70,7 @@ def load_config():
                 HOTKEYS[id]["text"] = v.get("text", HOTKEYS[id]["text"])
                 HOTKEYS[id]["alias"] = v.get("alias", HOTKEYS[id]["alias"])
             notify_enabled = data.get("notify", True)
+            installed_directory = data.get("installed", os.path.join(os.path.expanduser("~"), "Downloads"))
 
 def save_config():
     data = {
@@ -54,7 +80,8 @@ def save_config():
                 "alias": HOTKEYS[k]["alias"]
             } for k in HOTKEYS
         },
-        "notify": notify_enabled
+        "notify": notify_enabled,
+        "installed": installed_directory
     }
     with open(CONFIG_FILE, 'w', encoding='utf-8') as f:
         json.dump(data, f, indent=4, ensure_ascii=False)
@@ -94,7 +121,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.textEdit.append("단축키를 누르면 문자열이 클립보드에 복사됩니다.")
         emitter.triggered.connect(self.display_message)
         self.saveButton.clicked.connect(self.save_settings)
-        self.fileButton.clicked.connect(self.list_files_in_directory)
+        self.selectPathButton.clicked.connect(self.select_installed_directory) # ver 1.3
+        self.updateButton.clicked.connect(self.list_files_in_directory) # ver 1.3
 
         self.input_fields = {}
         for i in range(8):
@@ -125,6 +153,12 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.load_settings()
         self.start_version_check_timer() # ver 1.2
+
+    # ver 1.3
+    def select_installed_directory(self):
+        global installed_directory
+        installed_directory = QFileDialog.getExistingDirectory(self, "폴더 선택")
+        self.display_message(installed_directory)
 
     def toggle_notify(self, state):
         global notify_enabled
@@ -199,10 +233,11 @@ class MainWindow(QtWidgets.QMainWindow):
 
     # ver 1.2
     def list_files_in_directory(self):
+        global installed_directory
         folder_path = r"D:\Source\Python\test-extension"
-        installed_path = r"D:\Source\Python\test-installed"
+        # installed_path = r"D:\Source\Python\test-installed"
         target_folder_name = "gom-extension"
-        final_dest_path = os.path.join(installed_path, target_folder_name)
+        final_dest_path = os.path.join(installed_directory, target_folder_name)
 
         if not os.path.exists(folder_path):
             QMessageBox.warning(self, "경고", "📁 대상 폴더가 존재하지 않습니다.")
@@ -295,10 +330,11 @@ class MainWindow(QtWidgets.QMainWindow):
 
     # ver 1.2
     def check_version_periodically(self):
+        global installed_directory
         folder_path = r"D:\Source\Python\test-extension"
-        installed_path = r"D:\Source\Python\test-installed"
+        # installed_path = r"D:\Source\Python\test-installed"
 
-        is_latest_flag, installed_ver, latest_ver = self.is_latest(folder_path, installed_path)
+        is_latest_flag, installed_ver, latest_ver = self.is_latest(folder_path, installed_directory)
         if not is_latest_flag:
             msg = f"🔔 새로운 버전이 있습니다!\n설치됨: {installed_ver}\n최신: {latest_ver}"
             self.display_message(msg)
@@ -307,7 +343,14 @@ class MainWindow(QtWidgets.QMainWindow):
             self.display_message(msg)
 
 if __name__ == "__main__":
+    from PyQt5.QtWidgets import QApplication, QMessageBox
     app = QtWidgets.QApplication(sys.argv)
+
+    checker = SingleInstanceChecker()
+    if checker.is_running():
+        QMessageBox.warning(None, "경고", "🚫 이미 실행 중입니다.")
+        sys.exit(0)
+
     window = MainWindow()
     window.show()
     threading.Thread(target=listen_hotkeys, daemon=True).start()
